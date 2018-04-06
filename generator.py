@@ -3,13 +3,13 @@ import os
 import tqdm, trange
 
 
-class RecognizerTrainer:
+class GeneratorTrainer:
     def __init__(self):
         self.model_directory = './model'
         self.sess = tf.Session()
         self.saver = tf.train.Saver()
 
-    def train_recognizer(self, load_existing_model=True):
+    def train_generator(self, load_existing_model=True):
         if load_existing_model and os.path.exists(self.model_directory):
             self.load_trained_model()
         else:
@@ -23,4 +23,4 @@ class RecognizerTrainer:
 
 
 if __name__ == '__main__':
-    RecognizerTrainer().train_recognizer()
+    GeneratorTrainer().train_generator()
