@@ -43,6 +43,20 @@ class GruCell(RNNCell):
         new_state = z_t * state + (1 - z_t) * h_candidate
         return new_state, new_state
 
+
+# Run stack of cells
+def run_cells(inputs, rnn_cell, init_st):
+    outputs = []
+    state = init_st
+    for input in inputs:
+        # for cell in rnn_cells:
+        output, state = rnn_cell(input, state)
+        outputs.append(output)
+
+    return outputs
+
+
+
 #
 # -------------------------------------------
 #
@@ -216,8 +230,8 @@ def sample( num=200, prime='ab' ):
 #
 
 sess = tf.Session()
-sess.run( tf.global_variables_initializer() )
-summary_writer = tf.summary.FileWriter( "./tf_logs", graph=sess.graph )
+sess.run(tf.global_variables_initializer())
+summary_writer = tf.summary.FileWriter("./tf_logs", graph=sess.graph)
 
 lts = []
 
