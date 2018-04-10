@@ -2,3 +2,8 @@ reports/
 .idea/
 librispeech/
 *.iml
+data.npy
+output_two_towers*
+*.pyc
+tf_logs/
+vocab.pkl
