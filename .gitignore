@@ -2,3 +2,7 @@ reports/
 .idea/
 librispeech/
 *.iml
+*.aux
+*.log
+*.pdf
+*.synctex.gz
