@@ -1,0 +1,158 @@
+loading preprocessed files
+FOUND 2 BATCHES
+0 0	4.0823
+Quoth RRRt                                                        
+1 0	3.7677
+Quoth                                                             
+2 0	3.5572
+Quoth                                                             
+3 0	3.4082
+Quoth                                                             
+4 0	3.2850
+Quoth                                                             
+5 0	3.2100
+Quoth                                                             
+6 0	3.1489
+Quoth                                                             
+7 0	3.1136
+Quoth                                                             
+8 0	3.0857
+Quoth                                                             
+9 0	3.0662
+Quoth                                                             
+10 0	3.0517
+Quoth                                                             
+11 0	3.0359
+Quoth                                                             
+12 0	3.0203
+Quoth                                                             
+13 0	3.0048
+Quoth                                                             
+14 0	2.9866
+Quoth                                                             
+15 0	2.9669
+Quoth                                                             
+16 0	2.9482
+Quoth                                                             
+17 0	2.9285
+Quoth                                                             
+18 0	2.9069
+Quoth                                                             
+19 0	2.8842
+Quoth                                                             
+20 0	2.8603
+Quoth                                                             
+21 0	2.8355
+Quoth                                                             
+22 0	2.8089
+Quoth                                                             
+23 0	2.7820
+Quoth                                                             
+24 0	2.7550
+Quoth                                                             
+25 0	2.7273
+Quoth   ao                                                        
+26 0	2.6977
+Quoth   ao                                                        
+27 0	2.6685
+Quoth   ao                                                        
+28 0	2.6390
+Quoth  aore                                                       
+29 0	2.6086
+Quoth  aore                                                       
+30 0	2.5788
+Quoth  aore   at   an   at   an   at   an   at   an   at   an   at
+31 0	2.5495
+Quoth  aore   at   an   at   an   at   an   at   an   at   an   at
+32 0	2.5203
+Quoth  aore   at   an   at   an   at   an   at   an   at   an   at
+33 0	2.4914
+Quoth  an   at    at   an   at   an   at   an   at   an   at   an 
+34 0	2.4627
+Quoth  and nore  at   an   at   an  he the  an  an  an  the  an  a
+35 0	2.4352
+Quoth  and sore s at  n  oore   at   an  he the  an  an  the  an  
+36 0	2.4073
+Quoth  and nore  at   an  the  an  an  the  an  an  the  an  an  t
+37 0	2.3800
+Quoth  and nore s at  n an  the  and nore s at  an  an  an  the  a
+38 0	2.3542
+Quoth  and nore s at  n an  the  and nore s at  n an  the  and nor
+39 0	2.3265
+Quoth  and the  and the  and the  and the  and the  and the  and t
+40 0	2.3003
+Quoth  and the the  and the the  and the the  and the  and the  an
+41 0	2.2760
+Quoth  and sand nore
+                                             
+42 0	2.2499
+Quoth  and sand nore
+                                             
+43 0	2.2244
+Quoth  and sand nore
+                                             
+44 0	2.2007
+Quoth  and sand nore
+                                  an the sing
+45 0	2.1776
+Quoth  and sand nore
+                                    an the si
+46 0	2.1521
+Quoth  and sand nore
+                                an the sing t
+47 0	2.1298
+Quoth  and sand nore
+                              and sand the si
+48 0	2.1062
+Quoth sand nore
+                        and nesting the sing the s
+49 0	2.0854
+Quoth sand nore
+                  and neand nore
+                 
+50 0	2.0822
+Quoth  and sand nothing ore
+                                and sa
+51 0	2.0462
+Quoth sand nore
+                      and nesting the sing the sin
+52 0	2.0235
+Quoth sand sore s and sore s and sore s and sore s and sore s and 
+53 0	2.0013
+Quoth sore sore sat the sore sat the sore sat the sore sat the sor
+54 0	1.9812
+Quoth same the sing the sing the sing the sing the sing the sing t
+55 0	1.9615
+Quoth sore sore sat the sore sat the sore sat the sore sat the sor
+56 0	1.9407
+Quoth same the sing the sing the sing the sing the sing the sing t
+57 0	1.9211
+Quoth same the sing the sing the sing the sing the sing the sing t
+58 0	1.9019
+Quoth sored ore and and and more.
+
+                    and the sin
+59 0	1.8856
+Quoth same the sing the sing the sing the sing the sing the sing t
+60 0	1.8653
+Quoth sored ore and and and more;
+                   and the sing 
+61 0	1.8494
+Quoth same the sing the sing the sing the sing the sing the sing t
+62 0	1.8251
+Quoth same the sored and and an thing more.
+
+     at   and the sin
+63 0	1.8058
+Quoth same the sing the sored ored and and an thing more.
+
+    The
+64 0	1.7859
+Quoth same sing the sored ored at in the the sillens the sill the 
+65 0	1.7681
+Quoth sored or wathe  the sing the sored and and an thing more.
+
+ 
+66 0	1.7524
+Quoth samd nore
+                         apens s and sathen the si

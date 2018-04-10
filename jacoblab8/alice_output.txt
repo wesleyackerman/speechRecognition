@@ -1,0 +1,85 @@
+loading preprocessed files
+FOUND 57 BATCHES
+0 0	4.4846
+Alice ate at e ane the the the the the the the the the the the the
+1 0	2.9892
+Alice the sand the wat the was the wat the was the wat the wat the
+2 0	2.5710
+Alice the said the was the was the was the was the was the was the
+3 0	2.2898
+Alice the said the said the was the was the was the was the was th
+4 0	2.1157
+Alice the said the said the said the said the said the said the sa
+5 0	1.9913
+Alice the said the King the said the King the said the King the sa
+6 0	1.8948
+Alice the said the King the said the King the said the King the sa
+7 0	1.8152
+Alice the said the Dormouse the was the could so the said the Dorm
+8 0	1.7477
+Alice the said to the said to the said to the said to the said to 
+9 0	1.6897
+Alice the began and the said to the began and the said to the bega
+10 0	1.6388
+Alice the began and the began and the began and the botter a littl
+11 0	1.5930
+Alice to see the was a little said to the baby to the baby to the 
+12 0	1.5507
+Alice to see the was a little said to the baby to the baby to the 
+13 0	1.5134
+Alice to be the reating to the baby was a little said to the said 
+14 0	1.4798
+Alice to be the reating to the baby was a little she was a little 
+15 0	1.4497
+Alice to be the reating to the was a little began and the was a li
+16 0	1.4224
+Alice to see the was a little began and the was a little began and
+17 0	1.3971
+Alice to see the way of the same the was a little began and the wa
+18 0	1.3732
+Alice to see the way of the same the was a little began and the wa
+19 0	1.3506
+Alice to see the way of the same the way of the same a were to the
+20 0	1.3288
+Alice to see the words and the way of the same a wondering to the 
+21 0	1.3086
+Alice to see the words all the same a wondering to the same a conc
+22 0	1.2887
+Alice to see the words all the same the way of the same the way of
+23 0	1.2721
+Alice to see the words all the same the way of the same the way of
+24 0	1.2596
+Alice to see the words all the same the same the same the same the
+25 0	1.2365
+Alice to see the words all the same the same the same the same the
+26 0	1.2191
+Alice to see it would be a little bottle was a little bottle was a
+27 0	1.2025
+Alice to see it would be a little bottle was a little bottle was a
+28 0	1.1862
+Alice to see it would be a little bottle was a little book at the 
+29 0	1.1700
+Alice to see it would be a little bottle was a little books and th
+30 0	1.1548
+Alice to herself, and the panching the same thing as the court, an
+31 0	1.1425
+Alice to herself, and the panching the same thing as the court, an
+32 0	1.1314
+Alice in a tone of the same thing as the court, and the court, and
+33 0	1.1170
+Alice in a tone of the same thing as it said, with a saw the Queen
+34 0	1.1042
+Alice in a tone of the same thing as it said, and the cook of the 
+35 0	1.0923
+Alice in a tone of the sounds and the court, and the whole first s
+36 0	1.0771
+Alice in a tone of the court, and the whole players a little door 
+37 0	1.0617
+Alice in a tone of the court, and the whole players to her the sea
+38 0	1.0488
+Alice would not to go to like this, it was as she could not its fe
+39 0	1.0384
+Alice would not to go to like this, it was as the court, and the l
+40 0	1.0293
+Alice would not to go to like this, it was as the other side of th
+41 0	1.0212

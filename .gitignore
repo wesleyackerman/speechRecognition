@@ -11,3 +11,7 @@ vocab.pkl
 *.log
 *.pdf
 *.synctex.gz
+*.pkl
+*.pyc
+*.npy
+tf_logs
