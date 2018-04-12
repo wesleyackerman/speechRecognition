@@ -1,25 +1,84 @@
-\documentclass[12pt]{article}
-\title{Text Generation with Stacked GRU RNNs}
-\author{Wesley Ackerman \and S. Jacob Powell}
-\date{\today}
+\documentclass[letterpaper]{article}
+\usepackage{iccc}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\pdfinfo{
+    /Title (Stacked Recursive Nerual Networks)
+    /Subject (Stacked Recursive Neural Networks with Gated Recurrent Units for Text Generation)
+/Author (Wes Ackerman, S. Jacob Powell)}
+\title{Stacked Recursive Neural Networks with \\
+Gated Recurrent Units for Text Generation}
+\author{Wes Ackerman, S. Jacob Powell\\
+    Computer Science Department\\
+    Brigham Young University\\
+    Provo, UT 84602  USA\\
+}
+\setcounter{secnumdepth}{0}
 
-% Four pages maximum
-% MLP with one hidden layer baseline
-% Model itself, ideally on more than one task
 \begin{document}
 \maketitle
 
 \begin{abstract}
-    Abstract paragraph here
+    Recursive Neural Networks (RNNs) have frequently been used in problems that require a time series component. Many
+    problems that humans are good at are of this nature; for example, speech synthesis, speech recognition, written text
+    (both generation and recognition), videos, and others. RNNs are made up of layers of individual cells, each
+    containing weights that represent long-term and short-term learned features, allowing for a latent state to be kept
+    between iterations. As with many machine learning architectures recently, adding more cells allows for more
+    combinations of features and latent weights, and therefore more complex information can be discovered and utilized.
+    Typically, a single ``layer'' of cells is actually a single cell that is reused with the previous state and current
+    time step's input, but adding cells on top of that which take the state of the previous layer allows this added
+    feature space combination. These types of RNNs are called ``stacked'', since there are multiple cells which feed
+    into each other in this fashion. This addition places RNNs clearly into the realm of deep learning, as many more
+    weights are added as well as needed computation, and is therefore also capable of impressive and sometimes
+    super-human results.
 \end{abstract}
 
 \section{Introduction}
-Introduction to RNNs and GRU
+    Recursive Neural Networks (RNNs) make use of compute units (or ``nodes'') that allow some sort of internal state to
+    be learned and passed on. Originally, RNNs utilized Long Short Term Memory cells (LSTMs) which allow for what their
+    name implies: they pass on important memory, both from recently and from far in the past. Information that is
+    reinforced through time grows stronger and is passed on further. An improvement upon LSTMs then came about which are
+    Gated Recurrent Units (GRUs), which conquer the same task better, and with fewer weights (and therefore fewer
+    computations).  GRUs can be directly substituted into the same recurrent structure with often better results. Both
+    cells have capabilities to not only learn new information quickly or steadily over time, but also to forget
+    misinformation that could have been gained early on or misleading information that is an anomaly or noise in the
+    data. This encourages overfit avoidance, which is very helpful, especially in a deep learning context.
+
+    In a regular, single ``layer'' RNN, there is actually only a single cell (LSTM or GRU). This cell receives the first
+    unit of input (like a letter of text, for example), processes it via its weights, and then passes out a state and an
+    output. These two outputs are actually one single value, but are treated semantically as two separate values used in
+    different ways. The output value is usually passed out to a dense layer, (therefore labeled ``output''), or to
+    a subsequent layer (in which case it would be a ``state''). It is also passed on through time, back to itself, in
+    order to prime the state (and corresponding long- and short-term memory that has been learned) for the next unit of
+    input (the next letter in the input text). A single layer RNN will have a single cell that is repeated through time
+    per unit of input; a multi-layer RNN (or ``stacked'' RNN) has any number of layers, but each layer has a single
+    cell, again repeated per unit of input (or in the case of the stacked layers, per output/state of the previous
+    layer). After the forward pass through the input text is complete, there is enough information to perform
+    backpropagation through time in order to find the change in weights. Horizontally (through time), the errors are
+    averaged (since there is actually only one cell per layer, and therefore only one error) or something similar, and
+    then the error is backpropagated to the previous layers as one would expect. The final layer's output is typically
+    sent through a fully connected multi-layered perceptron (MLP) in order to learn the higher order combinations of
+    RNN states through time, and then standard classification or whatever task at hand can then be performed
+    successfully.
+
+    Some problems require RNNs in order to get decent results of any kind. This is because of the focus that RNNs have
+    on certain values being dependent upon previous values, and sometimes future values also help. Using future values
+    as well as the past values as context for the current prediction can sometimes prove to be extremely beneficial,
+    resulting in superior performance. These types of RNNs are called Bi-directional. Any one of these RNN types are
+    just like any other machine learning model; they perform very well in the tasks they are well suited for, and much
+    more poorly on tasks that they are not. RNNs perform well when the context required for the current prediction is
+    dependent upon the other parts (previous or future) of the data/input. This is the reason RNNs are so frequently
+    used in a deep learning context for speech, text, and video. It is able to synthesize across time and generalize
+    across time, which is unique to RNNs altogether.
 
 \section{Task}
 Task of text generation specifically and why RNNs solve the problem best
 
-\section{RNN Architecture and Details}
+\section{RNN Architecture}
+Details of the GRU structure here
+
+\section{Experiments}
 Architecture and implementation Details of RNN
 
 \section{Results}
