@@ -2,9 +2,9 @@
 import tensorflow as tf
 import numpy as np
 from textloader import TextLoader
-from tensorflow.python.ops.rnn_cell import BasicLSTMCell, MultiRNNCell
+from tensorflow.contrib.rnn import BasicLSTMCell, MultiRNNCell
 from tensorflow.contrib.legacy_seq2seq import rnn_decoder, sequence_loss
-from tensorflow.python.ops.rnn_cell import RNNCell
+from tensorflow.contrib.rnn import RNNCell
 
 
 class GRU(RNNCell):
@@ -23,17 +23,17 @@ class GRU(RNNCell):
         initializer = tf.contrib.layers.variance_scaling_initializer
         input_size = inputs.get_shape().as_list()[-1]
 
-        Wz = tf.get_variable('Wz', [input_size, self._num_units], initializer=initializer())
-        Uz = tf.get_variable('Uz', [self._num_units, self._num_units], initializer=initializer())
-        bz = tf.get_variable('bz', [self._num_units], initializer=initializer())
+        Wz = tf.get_variable('Wz', [input_size, self._num_units], initializer=initializer(), reuse=True)
+        Uz = tf.get_variable('Uz', [self._num_units, self._num_units], initializer=initializer(), reuse=True)
+        bz = tf.get_variable('bz', [self._num_units], initializer=initializer(), reuse=True)
 
-        Wr = tf.get_variable('Wr', [input_size, self._num_units], initializer=initializer())
-        Ur = tf.get_variable('Ur', [self._num_units, self._num_units], initializer=initializer())
-        br = tf.get_variable('br', [self._num_units], initializer=initializer())
+        Wr = tf.get_variable('Wr', [input_size, self._num_units], initializer=initializer(), reuse=True)
+        Ur = tf.get_variable('Ur', [self._num_units, self._num_units], initializer=initializer(), reuse=True)
+        br = tf.get_variable('br', [self._num_units], initializer=initializer(), reuse=True)
 
-        Wh = tf.get_variable('Wh', [input_size, self._num_units], initializer=initializer())
-        Uh = tf.get_variable('Uh', [self._num_units, self._num_units], initializer=initializer())
-        bh = tf.get_variable('bh', [self._num_units], initializer=initializer())
+        Wh = tf.get_variable('Wh', [input_size, self._num_units], initializer=initializer(), reuse=True)
+        Uh = tf.get_variable('Uh', [self._num_units, self._num_units], initializer=initializer(), reuse=True)
+        bh = tf.get_variable('bh', [self._num_units], initializer=initializer(), reuse=True)
 
         zt = tf.sigmoid(tf.matmul(inputs, Wz) + tf.matmul(state, Uz) + bz)
         rt = tf.sigmoid(tf.matmul(inputs, Wr) + tf.matmul(state, Ur) + br)

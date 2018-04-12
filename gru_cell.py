@@ -21,25 +21,25 @@ class GruCell(RNNCell):
     def __call__(self, inputs, state, scope=None):
         input_dim = inputs.shape[-1]
         w_xr = tf.get_variable(self._name + 'w_xr', [input_dim, self.state_dim], dtype=tf.float32,
-                               initializer=tf.random_normal_initializer)
+                               initializer=tf.variance_scaling_initializer)
         w_hr = tf.get_variable(self._name + 'w_hr', [self.state_dim, self.state_dim], dtype=tf.float32,
-                               initializer=tf.random_normal_initializer)
+                               initializer=tf.variance_scaling_initializer)
         b_r = tf.get_variable(self._name + 'b_r', [self.state_dim], dtype=tf.float32,
-                              initializer=tf.random_normal_initializer)
+                              initializer=tf.variance_scaling_initializer)
 
         w_xz = tf.get_variable(self._name + 'w_xz', [input_dim, self.state_dim], dtype=tf.float32,
-                               initializer=tf.random_normal_initializer)
+                               initializer=tf.variance_scaling_initializer)
         w_hz = tf.get_variable(self._name + 'w_hz', [self.state_dim, self.state_dim], dtype=tf.float32,
-                               initializer=tf.random_normal_initializer)
+                               initializer=tf.variance_scaling_initializer)
         b_z = tf.get_variable(self._name + 'b_z', [self.state_dim], dtype=tf.float32,
-                              initializer=tf.random_normal_initializer)
+                              initializer=tf.variance_scaling_initializer)
 
         w_xh = tf.get_variable(self._name + 'w_xh', [input_dim, self.state_dim], dtype=tf.float32,
-                               initializer=tf.random_normal_initializer)
+                               initializer=tf.variance_scaling_initializer)
         w_hh = tf.get_variable(self._name + 'w_hh', [self.state_dim, self.state_dim], dtype=tf.float32,
-                               initializer=tf.random_normal_initializer)
+                               initializer=tf.variance_scaling_initializer)
         b_h = tf.get_variable(self._name + 'b_h', [self.state_dim], dtype=tf.float32,
-                              initializer=tf.random_normal_initializer)
+                              initializer=tf.variance_scaling_initializer)
 
         r_t = tf.sigmoid(tf.matmul(inputs, w_xr) + tf.matmul(state, w_hr) + b_r, name=self._name + 'r_sigmoid')
         z_t = tf.sigmoid(tf.matmul(inputs, w_xz) + tf.matmul(state, w_hz) + b_z, name=self._name + 'z_sigmoid')

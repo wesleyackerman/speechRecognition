@@ -5,7 +5,6 @@ from tensorflow.contrib.rnn import BasicLSTMCell
 from tensorflow.contrib.rnn import RNNCell
 from gru_cell import GruCell
 
-
 # Run stack of cells
 def run_cells(inpts, rnn_cells, init_st):
     outpts = []
@@ -31,9 +30,18 @@ def create_init_state(b_size, st_dim, n_layers):
     return tuple(init_st)
 
 
+def sequence_loss(logits, targets, vocab_size):
+    targets = tf.convert_to_tensor(targets)
+    logits = tf.reshape(logits, [targets.shape[0], targets.shape[1], vocab_size])
+    norm_probs = tf.nn.softmax(logits, dim=-1)
+    one_hot_targets = tf.squeeze(tf.one_hot(targets, vocab_size))
+    return tf.reduce_mean(-tf.reduce_sum(one_hot_targets * tf.log(norm_probs), reduction_indices=[-1]))
+    #return tf.reduce_sum(tf.abs(one_hot_targets - norm_probs))
+
+
 batch_size = 50
 sequence_length = 50
-n_epochs = 1000
+n_epochs = 75
 
 data_loader = TextLoader(".", batch_size, sequence_length)
 
@@ -43,7 +51,8 @@ state_dim = 128
 LR = 0.01
 num_layers = 2
 
-seed_words = ['And', 'The', 'There', 'With' 'He', 'She', 'A']
+seed_words = ['And', 'The', 'There', 'With' 'He', 'She', 'A', '\'And', '\'The', '\'There', '\'We']
+write_filename = "output_test_loss.txt"
 
 tf.reset_default_graph()
 
@@ -70,8 +79,9 @@ with tf.variable_scope("rnn_vars") as scope:
 
     dense = tf.matmul(outputs, dense_w) + dense_b
     probs = tf.nn.softmax(dense)
-    loss = tf.contrib.legacy_seq2seq.sequence_loss_by_example([dense], [targets], [tf.ones([batch_size * sequence_length])])
-    loss = tf.reduce_sum(loss) / batch_size / sequence_length
+    loss = sequence_loss(dense, targets, vocab_size)
+    #loss = tf.contrib.legacy_seq2seq.sequence_loss_by_example([dense], [targets], [tf.ones([batch_size * sequence_length])])
+    #loss = tf.reduce_sum(loss) / batch_size / sequence_length
     tvars = tf.trainable_variables()
     grads, _ = tf.clip_by_global_norm(tf.gradients(loss, tvars),
                                       1.0)
@@ -110,7 +120,7 @@ def sample(num=200, prime='ab'):
     for n in range(num):
         x = np.ravel(data_loader.vocab[char]).astype('int32')
 
-        feed = {s_in_ph:x}
+        feed = {s_in_ph: x}
         for i, s in enumerate(s_init_state):
             feed[s] = s_state[i]
         ops = [s_probs]
@@ -121,7 +131,10 @@ def sample(num=200, prime='ab'):
         s_probsv = retval[0]
         s_state = retval[1:]
 
-        sample = np.random.choice(vocab_size, p=s_probsv[0])
+        if ret[-1] == " ":
+            sample = np.random.choice(vocab_size, p=s_probsv[0])
+        else:
+            sample = np.argmax(s_probsv[0])
 
         pred = data_loader.chars[sample]
         ret += pred
@@ -135,6 +148,8 @@ sess.run(tf.global_variables_initializer())
 summary_writer = tf.summary.FileWriter("./tf_logs", graph=sess.graph)
 
 lts = []
+with open(write_filename, 'w') as file:
+    file.write("")
 
 print("FOUND %d BATCHES" % data_loader.num_batches)
 
@@ -161,12 +176,12 @@ for j in range(n_epochs):
             print("%d %d\t%.4f" % (j, i, lt))
             lts.append(lt)
 
-    print(sample(num=100, prime=np.random.choice(seed_words).encode("utf8")))
+    print(sample(num=300, prime=np.random.choice(seed_words).encode("utf8")))
     if j % 10 == 0:
-        with open("output_two_towers_gru.txt", 'a') as file:
+        with open(write_filename, 'a') as file:
             file.write("epoch " + str(j) + "\n")
             for i in range(5):
-                file.write(sample(num=100, prime=np.random.choice(seed_words)).encode("utf8"))
+                file.write(sample(num=300, prime=np.random.choice(seed_words)).encode("utf8"))
                 file.write('\n')
 
 summary_writer.close()

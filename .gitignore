@@ -15,3 +15,4 @@ vocab.pkl
 *.pyc
 *.npy
 tf_logs
+*.py~
