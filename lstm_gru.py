@@ -5,6 +5,9 @@ from gru_cell import GruCell
 import matplotlib.pyplot as plt
 import time
 
+
+prefix = 'example_prefix_'
+
 # Run stack of cells
 def run_cells(inpts, rnn_cells, init_st):
     outpts = []
@@ -32,7 +35,7 @@ def create_init_state(b_size, st_dim, n_layers):
 
 def sequence_loss(logits, targets, vocab_size):
     targets = tf.convert_to_tensor(targets)
-    logits = tf.reshape(logits, [targets.shape[0], targets.shape[1], vocab_size])
+    logits = tf.reshape(logits, [int(targets.shape[0]), int(targets.shape[1]), vocab_size])
     norm_probs = tf.nn.softmax(logits, dim=-1)
     one_hot_targets = tf.squeeze(tf.one_hot(targets, vocab_size))
     return tf.reduce_mean(-tf.reduce_sum(one_hot_targets * tf.log(norm_probs), reduction_indices=[-1]))
@@ -55,7 +58,7 @@ LR = 0.01
 num_layers = 2
 
 seed_words = ['And', 'The', 'There', 'With' 'He', 'She', 'A', '\'And', '\'The', '\'There', '\'We']
-write_filename = "output_test_loss.txt"
+write_filename = prefix + "output_test_loss.txt"
 
 tf.reset_default_graph()
 
@@ -193,6 +196,6 @@ plt.plot(x_values, np.array(lts))
 plt.ylabel("Sequence Loss")
 plt.xlabel("Epoch")
 plt.title("Sequence loss across epochs")
-plt.savefig(get_time_str() + "_loss_graph.png", bbox_inches='tight')
+plt.savefig(prefix + get_time_str() + "_loss_graph.png", bbox_inches='tight')
 
 summary_writer.close()
