@@ -16,3 +16,4 @@ vocab.pkl
 *.npy
 tf_logs
 *.py~
+spokenverbs/db.verbs

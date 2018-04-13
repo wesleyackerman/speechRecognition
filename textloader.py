@@ -51,7 +51,7 @@ class TextLoader():
                                                    self.seq_length))
 
         # When the data (tensor) is too small, let's give them a better error message
-        if self.num_batches==0:
+        if self.num_batches == 0:
             assert False, "Not enough data. Make seq_length and batch_size small."
 
         self.tensor = self.tensor[:self.num_batches * self.batch_size * self.seq_length]
@@ -66,15 +66,14 @@ class TextLoader():
     def next_batch(self):
         x, y = self.x_batches[self.pointer], self.y_batches[self.pointer]
         self.pointer += 1
-        if self.pointer >= len( self.x_batches ):
+        if self.pointer >= len(self.x_batches):
             self.reset_batch_pointer()
 
         return x, y
 
     def random_batch(self):
-        pointer = np.random.randint( len( self.x_batches ) )
+        pointer = np.random.randint(len(self.x_batches))
         return self.x_batches[pointer], self.y_batches[pointer]
 
     def reset_batch_pointer(self):
         self.pointer = 0
-        

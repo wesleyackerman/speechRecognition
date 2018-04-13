@@ -1,9 +1,9 @@
 import tensorflow as tf
 import numpy as np
 from textloader import TextLoader
-from tensorflow.contrib.rnn import BasicLSTMCell
-from tensorflow.contrib.rnn import RNNCell
 from gru_cell import GruCell
+import matplotlib.pyplot as plt
+import time
 
 # Run stack of cells
 def run_cells(inpts, rnn_cells, init_st):
@@ -38,10 +38,13 @@ def sequence_loss(logits, targets, vocab_size):
     return tf.reduce_mean(-tf.reduce_sum(one_hot_targets * tf.log(norm_probs), reduction_indices=[-1]))
     #return tf.reduce_sum(tf.abs(one_hot_targets - norm_probs))
 
+def get_time_str():
+    return time.strftime("%d%b%Y-%H:%M:%S", time.gmtime())
+
 
 batch_size = 50
 sequence_length = 50
-n_epochs = 75
+n_epochs = 80
 
 data_loader = TextLoader(".", batch_size, sequence_length)
 
@@ -164,7 +167,7 @@ for j in range(n_epochs):
         for k, s in enumerate(init_state):
             feed[s] = state[k]
 
-        ops = [train_op,loss]
+        ops = [train_op, loss]
         ops.extend(list(final_state))
 
         retval = sess.run(ops, feed_dict=feed)
@@ -177,11 +180,19 @@ for j in range(n_epochs):
             lts.append(lt)
 
     print(sample(num=300, prime=np.random.choice(seed_words).encode("utf8")))
-    if j % 10 == 0:
+    if j % 5 == 0:
         with open(write_filename, 'a') as file:
             file.write("epoch " + str(j) + "\n")
             for i in range(5):
                 file.write(sample(num=300, prime=np.random.choice(seed_words)).encode("utf8"))
                 file.write('\n')
+
+fig = plt.figure(1, figsize=(6, 6))
+x_values = np.arange(j + 1) + 1
+plt.plot(x_values, np.array(lts))
+plt.ylabel("Sequence Loss")
+plt.xlabel("Epoch")
+plt.title("Sequence loss across epochs")
+plt.savefig(get_time_str() + "_loss_graph.png", bbox_inches='tight')
 
 summary_writer.close()
