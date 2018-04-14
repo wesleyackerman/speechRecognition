@@ -1,0 +1,4 @@
+num_layers = 1-9
+LR = .0001 + orders magintude to 1
+state_dim = powers of 2 starting 64
+sequence_length = 20 - 200 ish
