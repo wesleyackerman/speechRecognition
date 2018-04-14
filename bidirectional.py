@@ -4,6 +4,11 @@ import numpy as np
 from gru_cell import GruCell
 import matplotlib.pyplot as plt
 import time
+import soundfile as sf
+
+
+prefix = 'example_prefix_'
+
 
 # Run stack of cells
 def run_cells(inpts, rnn_cells, init_st):
@@ -43,18 +48,17 @@ def get_time_str():
 
 
 batch_size = 50
-sequence_length = 24
 n_epochs = 80
-n_classes = 4
 data_file = "spokenverbs/db.dog.hdf5"
 
 f = h5py.File(data_file, 'r')
 data = f['data'].value
 labels = f['labels'].value
-print type(data)
-print type(labels)
-print data.shape
-print labels.shape
+n_instances = data.shape[0]
+n_batches = n_instances // batch_size
+n_classes = np.unique(labels).shape[0]
+sequence_length = data.shape[1]
+n_values = data.shape[2]
 
 state_dim = 128
 
@@ -64,31 +68,32 @@ num_layers = 2
 tf.reset_default_graph()
 
 with tf.variable_scope("rnn_vars") as scope:
-    in_ph = tf.placeholder(tf.int32, [batch_size, sequence_length], name='inputs')
+    in_ph = tf.placeholder(tf.float32, [batch_size, sequence_length, n_values], name='inputs')
     targ_ph = tf.placeholder(tf.int32, [batch_size, 1], name='targets')
-    #in_onehot = tf.one_hot(in_ph, n_classes, name="input_onehot")
+    # in_onehot = tf.one_hot(in_ph, n_classes, name="input_onehot")
 
-    inputs = tf.split(in_ph, sequence_length, axis=1)
-    inputs = [tf.squeeze(input_, [1]) for input_ in inputs]
-    targets = tf.split(targ_ph, sequence_length, axis=1)
+    # Change dims to sequence length, then batch, then n_values so we can iterate over sequence items
+    inputs = tf.transpose(in_ph, perm=[1, 0, 2])
+    inputs = tf.split(inputs, sequence_length)
+    inputs = [tf.squeeze(input_, [0]) for input_ in inputs]
+    # inputs = tf.split(in_ph, sequence_length, axis=1)
+    # inputs = [tf.squeeze(input_, [1]) for input_ in inputs]
+    # targets = tf.split(targ_ph, sequence_length, axis=1)
 
     cells = []
     for i in range(num_layers):
         cells.append(GruCell(state_dim, n_classes, name='cell' + str(i)))
-    # mrnn_cell = tf.contrib.rnn.MultiRNNCell(cells)
     init_state = create_init_state(batch_size, state_dim, num_layers)
-    # outputs, final_state = tf.contrib.legacy_seq2seq.rnn_decoder(inputs, init_state, mrnn_cell)
     outputs, final_state = run_cells(inputs, cells, init_state)
-    outputs = tf.reshape(tf.convert_to_tensor(outputs), [-1, state_dim])
+    outputs = tf.transpose(tf.convert_to_tensor(outputs), perm=[1, 0, 2])
+    outputs = tf.reshape(outputs, [batch_size, -1])
 
-    dense_w = tf.get_variable("dense_w", [state_dim, n_classes])
+    dense_w = tf.get_variable("dense_w", [state_dim * sequence_length, n_classes])
     dense_b = tf.get_variable("dense_b", [n_classes])
 
     dense = tf.matmul(outputs, dense_w) + dense_b
     probs = tf.nn.softmax(dense)
-    loss = sequence_loss(dense, targets, n_classes)
-    #loss = tf.contrib.legacy_seq2seq.sequence_loss_by_example([dense], [targets], [tf.ones([batch_size * sequence_length])])
-    #loss = tf.reduce_sum(loss) / batch_size / sequence_length
+    loss = sequence_loss(dense, targ_ph, n_classes)
     tvars = tf.trainable_variables()
     grads, _ = tf.clip_by_global_norm(tf.gradients(loss, tvars),
                                       1.0)
@@ -96,78 +101,20 @@ with tf.variable_scope("rnn_vars") as scope:
     train_op = optimizer.apply_gradients(zip(grads, tvars))
 
     scope.reuse_variables()
-    s_in_ph = tf.placeholder(tf.int32, [1], name='s_inputs')
-    s_in_onehot = tf.one_hot(s_in_ph, n_classes, name="s_input_onehot")
-
-    s_inputs = [s_in_onehot]
-    # s_init_state = mrnn_cell.zero_state(1, tf.float32)
-    s_init_state = create_init_state(1, state_dim, num_layers)
-    # s_outputs, s_final_state = tf.contrib.legacy_seq2seq.rnn_decoder(s_inputs, s_init_state, mrnn_cell)
-    s_outputs, s_final_state = run_cells(s_inputs, cells, s_init_state)
-    s_outputs = tf.reshape(tf.concat(s_outputs, 1), [-1, state_dim])
-
-    s_dense_w = tf.get_variable("dense_w", [state_dim, vocab_size])
-    s_dense_b = tf.get_variable("dense_b", [vocab_size])
-
-    s_dense = tf.matmul(s_outputs, s_dense_w) + s_dense_b
-    s_probs = tf.nn.softmax(s_dense)
-
-
-def sample(num=200, prime='ab'):
-    s_state = sess.run(s_init_state)
-    for char in prime[:-1]:
-        x = np.ravel(data_loader.vocab[char]).astype('int32')
-        feed = {s_in_ph:x}
-        for i, s in enumerate(s_init_state):
-            feed[s] = s_state[i]
-        s_state = sess.run(s_final_state, feed_dict=feed)
-
-    ret = prime
-    char = prime[-1]
-    for n in range(num):
-        x = np.ravel(data_loader.vocab[char]).astype('int32')
-
-        feed = {s_in_ph: x}
-        for i, s in enumerate(s_init_state):
-            feed[s] = s_state[i]
-        ops = [s_probs]
-        ops.extend(list(s_final_state))
-
-        retval = sess.run(ops, feed_dict=feed)
-
-        s_probsv = retval[0]
-        s_state = retval[1:]
-
-        if ret[-1] == " ":
-            sample = np.random.choice(vocab_size, p=s_probsv[0])
-        else:
-            sample = np.argmax(s_probsv[0])
-
-        pred = data_loader.chars[sample]
-        ret += pred
-        char = pred
-
-    return ret
-
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 summary_writer = tf.summary.FileWriter("./tf_logs", graph=sess.graph)
 
 lts = []
-with open(write_filename, 'w') as file:
-    file.write("")
-
-print("FOUND %d BATCHES" % data_loader.num_batches)
 
 for j in range(n_epochs):
     state = sess.run(init_state)
-    data_loader.reset_batch_pointer()
 
-    for i in range(data_loader.num_batches):
-        x, y = data_loader.next_batch()
+    for i in range(n_batches):
+        x, y = data[i*batch_size:(i*batch_size) + batch_size], labels[i*batch_size:(i*batch_size) + batch_size]
 
-        feed = {in_ph: x, targ_ph: y}
+        feed = {in_ph: x, targ_ph: np.expand_dims(y, -1)}
         for k, s in enumerate(init_state):
             feed[s] = state[k]
 
@@ -178,18 +125,7 @@ for j in range(n_epochs):
 
         lt = retval[1]
         state = retval[2:]
-
-        if i % 1000 == 0:
-            print("%d %d\t%.4f" % (j, i, lt))
-            lts.append(lt)
-
-    print(sample(num=300, prime=np.random.choice(seed_words).encode("utf8")))
-    if j % 5 == 0:
-        with open(write_filename, 'a') as file:
-            file.write("epoch " + str(j) + "\n")
-            for i in range(5):
-                file.write(sample(num=300, prime=np.random.choice(seed_words)).encode("utf8"))
-                file.write('\n')
+        print lt
 
 fig = plt.figure(1, figsize=(6, 6))
 x_values = np.arange(j + 1) + 1
@@ -197,6 +133,6 @@ plt.plot(x_values, np.array(lts))
 plt.ylabel("Sequence Loss")
 plt.xlabel("Epoch")
 plt.title("Sequence loss across epochs")
-plt.savefig(get_time_str() + "_loss_graph.png", bbox_inches='tight')
+plt.savefig(prefix + get_time_str() + "_loss_graph.png", bbox_inches='tight')
 
 summary_writer.close()

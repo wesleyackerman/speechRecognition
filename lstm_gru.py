@@ -191,7 +191,7 @@ for j in range(n_epochs):
                 file.write('\n')
 
 fig = plt.figure(1, figsize=(6, 6))
-x_values = np.arange(j + 1) + 1
+x_values = np.arange(len(lts)) + 1
 plt.plot(x_values, np.array(lts))
 plt.ylabel("Sequence Loss")
 plt.xlabel("Epoch")
