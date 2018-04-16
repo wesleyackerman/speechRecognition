@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 import time
 
 
-prefix = 'example_prefix_'
-
 # Run stack of cells
 def run_cells(inpts, rnn_cells, init_st):
     outpts = []
@@ -44,6 +42,8 @@ def sequence_loss(logits, targets, vocab_size):
 def get_time_str():
     return time.strftime("%d%b%Y-%H:%M:%S", time.gmtime())
 
+
+prefix = 'example_prefix_'
 
 batch_size = 50
 sequence_length = 50
